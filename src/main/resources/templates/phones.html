@@ -38,7 +38,7 @@
     <tbody>
     <tr th:each="phone : ${phones}">
         <td th:text="${phone.name}"></td>
-        <td th:text="${phone.price}"></td>
+        <td th:text="${phone.price} + ' MKD'"></td>
         <td th:text="${phone.store}"></td>
         <td><a th:href="${phone.url}" target="_blank">Details</a></td>
     </tr>
