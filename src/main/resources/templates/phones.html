@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Phone Listings</title>
+</head>
+<body>
+<h1>Phone Listings from Anhoch</h1>
+<table border="1">
+    <thead>
+    <tr>
+        <th>Name</th>
+        <th>Price</th>
+        <th>Link</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="phone : ${phones}">
+        <td th:text="${phone.name}"></td>
+        <td th:text="${phone.price}"></td>
+        <td><a th:href="${phone.url}" target="_blank">View</a></td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>
