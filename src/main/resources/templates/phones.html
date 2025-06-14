@@ -1,24 +1,46 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <title>Phone Listings</title>
+    <title>Phones List</title>
+    <style>
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-top: 20px;
+        }
+
+        th, td {
+            padding: 10px;
+            border: 1px solid #ccc;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        tr:hover {
+            background-color: #f9f9f9;
+        }
+
+        a {
+            color: blue;
+            text-decoration: underline;
+        }
+    </style>
 </head>
 <body>
-<h1>Phone Listings from Anhoch</h1>
-<table border="1">
+<h1>Phones</h1>
+<table>
     <thead>
-    <tr>
-        <th>Name</th>
-        <th>Price</th>
-        <th>Link</th>
-    </tr>
+    <tr><th>Name</th><th>Price</th><th>Store</th><th>Link</th></tr>
     </thead>
     <tbody>
     <tr th:each="phone : ${phones}">
         <td th:text="${phone.name}"></td>
         <td th:text="${phone.price}"></td>
-        <td><a th:href="${phone.url}" target="_blank">View</a></td>
+        <td th:text="${phone.store}"></td>
+        <td><a th:href="${phone.url}" target="_blank">Details</a></td>
     </tr>
     </tbody>
 </table>
