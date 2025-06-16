@@ -26,9 +26,8 @@ public abstract class PhoneScraper {
      protected PhoneScraper(PhoneRepository phoneRepository) {
           this.phoneRepository = phoneRepository;
      }
-
-     public void scrapePhones(ScrapeMode scrapeMode){
-          List<Phone> scrapedPhones = new ArrayList<>();
+     public List<Phone> scrapePhones(){
+          List<Phone> newPhones = new ArrayList<>();
           WebDriver webDriver = null;
           try{
                 webDriver = initializeWebDriver();
@@ -40,14 +39,11 @@ public abstract class PhoneScraper {
                     }
                     Document document = loadPage(webDriver,page);
                     if(document == null) break;
-                    scrapedPhones.addAll(processPageItems(document,page));
+                    newPhones.addAll(processPageItems(document,page));
                     introduceDelay();
                     page++;
                }
-               if(!scrapedPhones.isEmpty()){
-                    System.out.println("Scraping finished. Saving "+scrapedPhones.size()+ " new phones");
-                    phoneRepository.saveAll(scrapedPhones);
-               }
+
 
           }catch(Exception e){
                System.err.println("Error occurred during scraping: "+ e.getMessage());
@@ -57,7 +53,9 @@ public abstract class PhoneScraper {
                assert webDriver != null;
                webDriver.quit();
           }
+          return newPhones;
      }
+
      private List<Phone> processPageItems(Document doc,int pageNumber){
           List<Phone> phonesForSaving = new ArrayList<>();
           Elements items = doc.select(getCSS_SELECTOR());
@@ -107,4 +105,7 @@ public abstract class PhoneScraper {
      abstract String getWAIT_CSS_SELECTOR();
      abstract String getBaseUrl();
 
+     public PhoneRepository getPhoneRepository() {
+          return phoneRepository;
+     }
 }

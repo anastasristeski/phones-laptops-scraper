@@ -32,7 +32,7 @@ public class PhoneController {
     @GetMapping("/scrape")
     @ResponseBody
     public String scrapePhones() throws InterruptedException {
-        phoneScraperService.scrapeAndSavePhones();
+        phoneScraperService.scrapeNewPhones();
         return "Scraping phones.. ";
     }
 }
