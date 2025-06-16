@@ -47,7 +47,6 @@ public class NeptunScraper implements PhoneScraper{
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
-
             page++;
         }
         if(!phones.isEmpty()) {
@@ -80,7 +79,7 @@ public class NeptunScraper implements PhoneScraper{
 
             Document doc = Jsoup.parse(pageSource);
 
-            return doc.select("div.col-lg-9.col-md-9.col-sm-8.col-fix-main > div");
+            return doc.select("div.col-lg-9.col-md-9.col-sm-8.col-fix-main > div.product-list-item-grid");
         }finally{
             webDriver.quit();
         }
@@ -90,9 +89,9 @@ public class NeptunScraper implements PhoneScraper{
 
         String name = item.selectFirst("h2.product-list-item__content--title").text();
         String  priceText = item.selectFirst("span.product-price__amount--value").text().trim();
-        int price = Integer.parseInt(priceText.replace(".", "").split(",")[0]);
+        int price = Integer.parseInt(priceText.replace(".", ""));
 
-        String relativeLink = item.attr("href").trim();
+        String relativeLink = item.selectFirst("div.white-box > a[href]").attr("href").trim();
         String url = "https://www.neptun.mk/ "+ relativeLink;
         return new Phone(name, price, url, "Neptun");
     }
