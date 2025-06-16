@@ -18,7 +18,6 @@ import org.springframework.stereotype.Component;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 @Component
 public abstract class PhoneScraper {
@@ -28,33 +27,30 @@ public abstract class PhoneScraper {
           this.phoneRepository = phoneRepository;
      }
 
-     public void scrapePhones(){
-          List<Phone> newPhonesForSaving = new ArrayList<>();
+     public void scrapePhones(ScrapeMode scrapeMode){
+          List<Phone> scrapedPhones = new ArrayList<>();
           WebDriver webDriver = null;
           try{
                 webDriver = initializeWebDriver();
                 int page = 1;
                while (true) {
-                    if(page ==11){
+                    if(page==11){
                          System.out.println("Repeating pages error");
                          break;
                     }
                     Document document = loadPage(webDriver,page);
-                    if(document == null){
-                         System.out.println("Failed to load page: " + page);
-                         break;
-                    }
-                    newPhonesForSaving.addAll(processPageItems(document,page));
+                    if(document == null) break;
+                    scrapedPhones.addAll(processPageItems(document,page));
                     introduceDelay();
                     page++;
                }
-               if(!newPhonesForSaving.isEmpty()){
-                    System.out.println("Scraping finished. Saving "+newPhonesForSaving.size()+ " new phones");
-                    phoneRepository.saveAll(newPhonesForSaving);
+               if(!scrapedPhones.isEmpty()){
+                    System.out.println("Scraping finished. Saving "+scrapedPhones.size()+ " new phones");
+                    phoneRepository.saveAll(scrapedPhones);
                }
 
           }catch(Exception e){
-               System.err.println("Error occured during scraping: "+ e.getMessage());
+               System.err.println("Error occurred during scraping: "+ e.getMessage());
                e.printStackTrace();
           }finally{
                System.out.println("Quitting webDriver");
@@ -62,7 +58,7 @@ public abstract class PhoneScraper {
                webDriver.quit();
           }
      }
-     List<Phone> processPageItems(Document doc,int pageNumber){
+     private List<Phone> processPageItems(Document doc,int pageNumber){
           List<Phone> phonesForSaving = new ArrayList<>();
           Elements items = doc.select(getCSS_SELECTOR());
           for(Element item:items){
