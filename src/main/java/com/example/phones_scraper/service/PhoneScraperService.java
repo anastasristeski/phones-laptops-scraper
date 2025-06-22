@@ -3,8 +3,12 @@ package com.example.phones_scraper.service;
 import com.example.phones_scraper.model.Phone;
 import com.example.phones_scraper.repository.PhoneRepository;
 import com.example.phones_scraper.service.scrapers.PhoneScraper;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.sql.SQLOutput;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -13,45 +17,43 @@ public class PhoneScraperService {
     List<PhoneScraper> phoneScraperList;
     private final PhoneRepository phoneRepository;
 
-    public PhoneScraperService(List<PhoneScraper>phoneScraperList,PhoneRepository phoneRepository) {
+    public PhoneScraperService(List<PhoneScraper> phoneScraperList, PhoneRepository phoneRepository) {
         this.phoneScraperList = phoneScraperList;
         this.phoneRepository = phoneRepository;
     }
-    public void scrapeNewPhones(){
-        for(PhoneScraper phoneScraper:phoneScraperList){
+    @Transactional
+    public void scrapeNewPhones() {
+        for (PhoneScraper phoneScraper : phoneScraperList) {
             List<Phone> scraped = phoneScraper.scrapePhones();
+            System.out.println("scraped "+ scraped);
             List<Phone> newPhones = scraped.stream()
-                    .filter(x->!phoneRepository.existsByUrl(x.getUrl()))
+                    .filter(x -> !phoneRepository.existsByUrl(x.getUrl()))
                     .toList();
-            if(!newPhones.isEmpty())
+            if (!newPhones.isEmpty()) {
                 phoneRepository.saveAll(newPhones);
-        }
-    }
-    public void updatePrices(){
-        for(PhoneScraper phoneScraper : phoneScraperList){
-            List<Phone> scrapedPhonesList = phoneScraper.scrapePhones();
-            for(Phone scraped:scrapedPhonesList){
-               Phone temp = phoneRepository.findByUrl(scraped.getUrl());
-               if(temp!=null && !Objects.equals(temp.getPrice(),scraped.getPrice())){
-                   temp.setPrice(scraped.getPrice());
-                   phoneRepository.save(temp);
-               }
             }
         }
     }
-    public void cleanDataBase(){
-        Set<String> scrapedUrls = phoneScraperList.stream()
-                .flatMap(s->s.scrapePhones().stream())
-                .map(Phone::getUrl)
-                .collect(Collectors.toSet());
-        phoneRepository.findAll().stream()
-                .filter(x->!scrapedUrls.contains(x.getUrl()))
-                .forEach(phoneRepository::delete);
-
+    @Transactional
+    public void initiateDatabaseCleanup() {
+        List<String> allUrls = new ArrayList<>();
+        List<String> urlsFromDB = phoneRepository.findAll().stream().map(Phone::getUrl).toList();
+        List<String> urlsForDeleting = new ArrayList<>();
+        System.out.println(urlsFromDB);
+        for (PhoneScraper phoneScraper : phoneScraperList) {
+            List<Phone> scraped = phoneScraper.scrapePhones();
+            System.out.println("scraped "+ scraped);
+            allUrls.addAll(scraped.stream().map(Phone::getUrl).toList());
+            System.out.println(allUrls);
         }
-    }
-//    public void scrapeAndSavePhones()  {
-//        phoneScraperList.forEach(PhoneScraper::scrapePhones);
-//    }
+        System.out.println("alll   "+allUrls);
 
+    }
+
+
+    public void updatePrices() {
+
+    }
+
+}
 

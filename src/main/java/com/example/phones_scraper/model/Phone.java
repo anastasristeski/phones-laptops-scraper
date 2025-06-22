@@ -86,4 +86,16 @@ public class Phone {
     public int hashCode() {
         return Objects.hash(url);
     }
+
+    @Override
+    public String toString() {
+        return "Phone{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", price=" + price +
+                ", url='" + url + '\'' +
+                ", store='" + store + '\'' +
+                ", brand='" + brand + '\'' +
+                '}';
+    }
 }

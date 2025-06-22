@@ -33,13 +33,14 @@
 <h1>Phones</h1>
 <table>
     <thead>
-    <tr><th>Name</th><th>Price</th><th>Store</th><th>Link</th></tr>
+    <tr><th>Name</th><th>Price</th><th>Store</th><th>Brand</th><th>Link</th></tr>
     </thead>
     <tbody>
     <tr th:each="phone : ${phones}">
         <td th:text="${phone.name}"></td>
         <td th:text="${phone.price} + ' MKD'"></td>
         <td th:text="${phone.store}"></td>
+        <td th:text="${phone.brand}"></td>
         <td><a th:href="${phone.url}" target="_blank">Details</a></td>
     </tr>
     </tbody>

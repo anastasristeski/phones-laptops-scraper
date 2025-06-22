@@ -27,7 +27,7 @@ public class NeptunScraper extends PhoneScraper{
         int price = Integer.parseInt(priceText.replace(".", ""));
 
         String relativeLink = item.selectFirst("div.white-box > a[href]").attr("href").trim();
-        String url = "https://www.neptun.mk "+ relativeLink;
+        String url = "https://www.neptun.mk"+ relativeLink;
         return new Phone(name, price, url, "Neptun");
     }
 

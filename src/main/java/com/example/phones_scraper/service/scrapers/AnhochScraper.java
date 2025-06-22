@@ -4,11 +4,9 @@ import com.example.phones_scraper.model.Phone;
 import com.example.phones_scraper.repository.PhoneRepository;
 
 import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import java.util.ArrayList;
-import java.util.List;
+
 
 @Component
 public class AnhochScraper extends PhoneScraper{
