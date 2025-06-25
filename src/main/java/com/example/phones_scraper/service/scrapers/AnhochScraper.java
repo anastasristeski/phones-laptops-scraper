@@ -43,4 +43,9 @@ public class AnhochScraper extends PhoneScraper{
     public String getBaseUrl(){
         return BASE_URL;
     }
+
+    @Override
+    String getScraper() {
+        return "Anhoch";
+    }
 }

@@ -45,4 +45,9 @@ public class NeptunScraper extends PhoneScraper{
         return BASE_URL;
     }
 
+    @Override
+    String getScraper() {
+        return "Neptun";
+    }
+
 }

@@ -25,7 +25,6 @@ public class PhoneScraperService {
     public void scrapeNewPhones() {
         for (PhoneScraper phoneScraper : phoneScraperList) {
             List<Phone> scraped = phoneScraper.scrapePhones();
-            System.out.println("scraped "+ scraped);
             List<Phone> newPhones = scraped.stream()
                     .filter(x -> !phoneRepository.existsByUrl(x.getUrl()))
                     .toList();
@@ -39,20 +38,13 @@ public class PhoneScraperService {
         List<String> allUrls = new ArrayList<>();
         List<String> urlsFromDB = phoneRepository.findAll().stream().map(Phone::getUrl).toList();
         List<String> urlsForDeleting = new ArrayList<>();
-        System.out.println(urlsFromDB);
         for (PhoneScraper phoneScraper : phoneScraperList) {
             List<Phone> scraped = phoneScraper.scrapePhones();
-            System.out.println("scraped "+ scraped);
             allUrls.addAll(scraped.stream().map(Phone::getUrl).toList());
-            System.out.println(allUrls);
         }
-        System.out.println("alll   "+allUrls);
-
-    }
-
-
-    public void updatePrices() {
-
+        urlsForDeleting=urlsFromDB.stream().filter(x->!allUrls.contains(x)).toList();
+        System.out.println(urlsForDeleting);
+        phoneRepository.deleteByUrlIn(urlsForDeleting);
     }
 
 }

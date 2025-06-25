@@ -33,7 +33,7 @@ public abstract class PhoneScraper {
                 webDriver = initializeWebDriver();
                 int page = 1;
                while (true) {
-                    if(page==2){
+                    if(page==11){
                          System.out.println("Repeating pages error");
                          break;
                     }
@@ -62,7 +62,6 @@ public abstract class PhoneScraper {
           for(Element item:items){
                     try{
                          Phone newPhone = createPhone(item);
-                         if(!phoneRepository.existsByUrl(newPhone.getUrl()))
                               phonesForSaving.add(newPhone);
                     }catch(Exception e){
                          System.err.println("Error processing a phone on page: "+pageNumber);
@@ -104,4 +103,5 @@ public abstract class PhoneScraper {
      abstract String getCSS_SELECTOR();
      abstract String getWAIT_CSS_SELECTOR();
      abstract String getBaseUrl();
+     abstract String getScraper();
 }
