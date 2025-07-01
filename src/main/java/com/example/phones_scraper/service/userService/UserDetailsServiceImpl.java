@@ -1,4 +1,4 @@
-package com.example.phones_scraper.service;
+package com.example.phones_scraper.service.userService;
 
 import com.example.phones_scraper.model.User;
 import com.example.phones_scraper.repository.UserRepository;

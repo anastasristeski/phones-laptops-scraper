@@ -1,16 +1,11 @@
-package com.example.phones_scraper.service;
+package com.example.phones_scraper.service.scrapersService;
 
 import com.example.phones_scraper.model.Phone;
 import com.example.phones_scraper.repository.PhoneRepository;
-import com.example.phones_scraper.service.scrapers.PhoneScraper;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.sql.SQLOutput;
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Service
 public class PhoneScraperService {
