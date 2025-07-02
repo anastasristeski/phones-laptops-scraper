@@ -18,6 +18,9 @@ public class Phone {
     private String url;
     private String store;
     private String brand;
+    @ManyToOne
+    @JoinColumn(name = "phone_model_id")
+    private PhoneModel phoneModel;
     public Phone(){}
     public Phone(String name, int price, String url,String store) {
         this.name = name;
@@ -25,6 +28,14 @@ public class Phone {
         this.url = url;
         this.store = store;
         this.brand = name.split("\\s+")[0];
+    }
+
+    public void setPhoneModel(PhoneModel phoneModel) {
+        this.phoneModel = phoneModel;
+    }
+
+    public PhoneModel getPhoneModel() {
+        return phoneModel;
     }
 
     public String getBrand() {
